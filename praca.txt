@@ -1,0 +1,565 @@
+﻿ 
+ 
+ Wydział Informatyki i Zarządzania kierunek studiów: Informatyka 
+ 
+ 
+ 
+ 
+Praca dyplomowa - inżynierska 
+ 
+ 
+ 
+APLIKACJA WSPOMAGAJĄCA TWORZENIE DEKLARACJI 
+NA PODATKI LOKALNE DLA OSÓB PRAWNYCH 
+ 
+ 
+Konrad Bączyński 
+ 
+ 
+ słowa kluczowe: deklaracja podatkowa, osoba prawna, podatek lokalny 
+           krótkie streszczenie: 
+          W pracy przedstawiono aplikację umożliwiającą generowanie deklaracji na podatki lokalne dla osób prawnych. Po wypełnieniu przez użytkownika formularza danymi o posiadanym mieniu wyliczany jest należny podatek i można wydrukować deklarację. Aplikacja ułatwia sporządzanie formularzy również w przypadku konieczności złożenie deklaracji korygującej za dany rok podatkowy oraz deklaracji w kolejnych latach. Dane użytkownika oraz wszystkie sporządzone przez niego formularze przechowywane są w bazie danych. 
+ 
+ 
+opiekun pracy dyplomowej 
+prof. dr hab. inż. Ireneusz Jóźwiak 
+....................... 
+....................... 
+
+Tytuł/stopień naukowy/imię i nazwisko 
+ocena 
+podpis 
+ 
+Do celów archiwalnych pracę dyplomową zakwalifikowano do:*  
+a) kategorii A (akta wieczyste)   
+b) kategorii BE 50 (po 50 latach podlegające ekspertyzie) * niepotrzebne skreślić 
+ 
+ 
+pieczątka wydziałowa 
+ 	Wrocław 2016 
+ 
+ 
+ 
+
+ 
+2 Dziękuję rodzicom za wychowanie i wykształcenie. Dziękuję promotorowi za przykład pracy i radości każdego dnia. Pracę dedykuję optymistom - tym którzy wierzą, że wszystko się powiedzie.
+3
+4
+Tytuł: Aplikacja wspomagająca tworzenie deklaracji na podatki lokalne dla osób prawnych
+Streszczenie
+W pracy przedstawiono aplikację wspomagającą generowanie deklaracji na podatki lokalne dla osób prawnych. Pozwala na przygotowanie trzech rodzajów deklaracji, tj. na podatek od nieruchomości, podatek rolny oraz podatek leśny. Użytkownik przed wypełnieniem formularza deklaracji zobowiąny jest do wykonania autentykacji. W przypadku kiedy nie posiada konta aplikacja umożliwia rejestrację. Po poprawnym zalogowaniu wyświetla się lista już wypełnionych formularzy na podstawie, których można wygenerować deklarację. Istnieje możliwość wyboru wcześniej wypełnionego formularza, który będzie wykorzystany podczas próby wypełniania formularza. Użytkownik może wypełnić jeden z trzech dostępnych formularzy. Każdy formularz posiada walidację pól. Podczas wypełniania kolejnych pól od razu sprawdzana jest ich poprawność. Pola, które należy wyliczyć na podstawie stawek podatku dla różnych rodzajów aktywów wyświetlane są automatycznie na stronie, bez konieczności przeładowania całej strony. Po poprawnym wypełnieniu istnieje możliwość wygenerowania dokumentu PDF. Wszystkie dane dotyczące użytkownika oraz wypełnione przez niego deklaracje przechowywane są w bazie danych. Rozróżnia się dwie kategorie dostępu, tj. użytkownik i administrator. Administrator posiada możliwość przeglądania danych użytkowników. Może usunąć użytkownika oraz sprawdzić jakiego typu uprawnienia posiada użytkownik. Dodatkowo może utworzyć nowe konto, nadać mu właściwe uprawnienia, a także edytować dane już istniejących użytkowników. Posiada również możliwość przeglądania statystyk dotyczących systemu, np. średnią liczbę poprawnych odpowiedzi aplikacji na żądanie na minutę albo z jakich usług systemu najwięcej razy skorzystali użytkownicy. Może sprawdzić także, czy wystąpiły błędy oraz jakiego rodzaju były to błędy.
+Title: Application supporting creation of a local taxes declaration for professionals
+Abstract
+The thesis presents an application supporting creation of a local taxes declaration for professionals. A user can generate three types of declarations, i.e. a property tax declaration, an agricultural tax declaration, a forestry tax declaration. Before filling a form wizard the user has to authenticate. If the user does not have an account, they could sign up. After the correct authentication the user can see a list of filled declarations and they can generate declarations based on them. The user can choose the default declaration and the application will initialize all next declarations with the data of the one. The user can choose one of three available forms. Every form is validated. When the user is filling the form, the application is live checking the correctness of fields. Count fields are filled automatically when the user fills the form and is multiplied by rates downloaded from the database without reloading all the page. After correct filling the declaration form the user can generate a PDF document. All the data concerning the user and declarations is kept in the database. There are users with two types of permissions, i.e. user and administrator. The administrator can watch users’ details. They can remove a user or check users’ permissions. The administrator can also create a new user or edit a current user’s details. The administrator is able to watch statistics concerning the system for instance: an average number of correct responses for requests per minute or the most popular services of the application. They are also able to check failures taking place and what kind of failures there are.
+6
+Spis treści
+Wstęp	9
+1 Wymagania projektowe aplikacji wspomagającej tworzenie deklaracji
+	na podatki lokalne dla osób prawnych	13
+2 Analiza literaturowa, stan wiedzy i techniki w zakresie rozwijania apli-
+	kacji webowych	15
+2.1. Przegląd istniejących rozwiązań . . . . . . . . . . . . . . . . . . . . . . . . . .	15
+2.2. Przydatne techniki i technologie wykorzystywane do rozwijania aplikacji
+	webowych . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	16
+2.3. Podsumowanie i wnioski	. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	18
+3 Założenia projektowe aplikacji wspomagającej tworzenie deklaracji na
+	podatki lokalne dla osób prawnych	19
+4 Projekt aplikacji wspomagającej tworzenie deklaracji na podatki lo-
+	kalne dla osób prawnych	21
+4.1. Przypadki użycia . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	21
+4.2. Interfejs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	26
+4.3. Baza danych . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	42
+4.4. Wzorzec architektoniczny . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	46
+4.5. Zasady tworzenia oprogramowania . . . . . . . . . . . . . . . . . . . . . . . .	46
+5 Implementacja aplikacji wspomagającej tworzenie deklaracji na po-
+	datki lokalne dla osób prawnych	47
+6 Konfiguracja, instalacja, instrukcja użytkowania aplikacji wspomaga-
+	jącej tworzenie deklaracji na podatki lokalne dla osób prawnych	51
+Zakończenie	53
+Bibliografia	55
+Spis rysunków	60
+8
+Wstęp
+Każda osoba prawna posiadająca mienie wchodzące w skład nieruchomości, gruntów lub lasów zobowiązana jest do złożenia raz w roku deklaracji na podatki lokalne odpowiednio do posiadanych aktywów, tj. podatek od nieruchomości, podatek rolny lub podatek leśny [37]. Podatnik składa stosowne deklaracje wraz z odpowiednimi załącznikami, które szczegółowo charakteryzują posiadane mienie, będące przedmiotem opodatkowania [4].
+Deklaracje na podatki lokalne składa się organowi podatkowemu właściwemu ze względu na miejsce położenia przedmiotów opodatkowania. Organem podatkowym jest odpowiednio wójt, burmistrz lub prezydent miasta. Deklaracje należy składać także wtedy, gdy posiadane dobra zwolnione są z podatku. Jeżeli osoba prawna posiada aktywa na różnych obszarach, wówczas zobowiązana jest do złożenia deklaracji odrębnie każdemu organowi podatkowemu, stosownie do posiadanych na jej obszarze składników majątku.
+Osoba prawna zobowiązana jest do złożenia deklaracji za dany rok podatkowy w ustawowym terminie, tj. do 31. stycznia na podatek od nieruchomości [6], natomiast na podatek rolny [7] i leśny [8] do 15. stycznia każdego roku.
+W przypadku, gdy nastąpi zmiana w posiadanym mieniu, podatnik zobowiązany jest do złożenia deklaracji korygującej na podatki lokalne w ciągu 14 dni od wystąpienia zmiany.
+Stawki podatku uchwalane są przez organy podatkowe raz w roku. Są one następnie ogłaszane w dzienniku urzędowym właściwego województwa.
+Każda osoba prawna wypełniając formularz deklaracji podaje informacje: za który rok deklaracja jest składana, czy pierwszy raz składa deklarację w danym roku, czy jest to deklaracja korygująca. Organ podatkowy [27] informowany jest o numerze identyfikacji podatkowej osoby prawnej oraz rodzaju własności. W kolejnych polach formularza należy uzupełnić szczegółowe dane ewidencyjne, a następnie w standardowych jednostkach powierzchni szczegółowe informacje o posiadanych dobrach. Następnie na bieżąco wylicza się należny podatek dla poszczególnych składników nieruchomości, czy gruntów zgodnie z uchwalonymi na dany rok stawkami. Potem należy go odrębnie podsumować i zaokrąglić do pełnych złotych. Posiadane składniki majątku podatnik ujmuje odpowiednio w jednej z dwóch części formularza: podlegającym opodatkowaniu bądź zwolnionym z podatku. Ta czynność wymaga dobrej znajomości przepisów podatkowych [2].
+Deklaracja podatkowa składana każdego roku zmusza podmiot za każdym razem do powtarzania tych samych czynności, które wykonywane stosunkowo rzadko mogą sprawiać dodatkową trudność z przypomnieniem sobie zagadnienia [3].
+Czynności konieczne do poprawnego wypełnienia deklaracji to: pozyskanie wiedzy z zakresu przepisów podatkowych, zdobycie informacji o posiadanych składnikach majątku, zasięgnięcie informacji dotyczących obowiązujących stawek podatkowych oraz wyliczenie wartości podatku szczegółowo dla składowych poszczególnych podatków i ogólnego zobowiązania wraz z poprawnymi zaokrągleniami.
+Nie znaleziono na polskim rynku żadnych rozwiązań ułatwiających użytkownikom tworzenie deklaracji na podatki lokalne. Inspiracją do napisania pracy były aplikacje wspomagające tworzenie "pitów"[35].
+Trudnością przy wypełnianiu deklaracji jest duża liczba pól na jednej stronie deklaracji. Gdy człowiek widzi taką liczbę okienek do wypełnienia traci orientację, gubi się, popełnia błędy.
+Interfejs graficzny aplikacji powinien być przyjazny użytkownikowi. Winien oferować formularz z liczbą miejsc do wypełnienia na jednej stronie, którą użytkownik z łatwością w całości będzie mógł objąć wzrokiem. Wszystkie pola na danej stronie powinny dotyczyć tej samej dziedziny.
+Aplikacja powinna umożliwiać ponowne wykorzystanie wcześniej wypełnionych deklaracji. Dzięki temu osoba, której mienie nie uległo zmianie mogłaby przejść przez formularz wyłącznie sprawdzając poprawność danych wypełnionych poprzednim razem. Przesłanką powstania pracy jest brak podobnych rozwiązań na rynku.
+Celem pracy jest opracowanie aplikacji wspomagającej sporządzanie deklaracji na podatki lokalne dla osób prawnych.
+Zakres pracy stanowią zadania związane ze szczegółowym zapoznaniem się z problemem składania deklaracji na podatki lokalne dla osób prawnych.
+Kolejnym etapem będzie zdefiniowanie wymagań dotyczących aplikacji. Wymagania powinny zostać sporządzone w sposób szczegółowy i precyzyjny.
+W kolejnym kroku należy sprawdzić jakie rozwiązania już istnieją oraz stwierdzić jakie mają zalety i wady. Potem należy podjąć decyzję, które z nich znajdą zastosowanie w aplikacji. Pozostałe należy zastąpić innymi rozwiązaniami: mniej czasochłonnymi i bardziej wydajnymi.
+Następnym etapem jest rozpoznanie i wybranie odpowiednich technologii, dzięki którym zostanie zaimplementowana aplikacja spełniająca zdefiniowane wymagania. Kolejnym krokiem będzie znalezienie najlepszych dostępnych narzędzi, które posłużą rozwijaniu aplikacji.
+W następnej kolejności należy odpowiednio zaprojektować architekturę systemu. Należy przedstawić przypadki użycia oraz model domenowy, logiczny i fizyczny bazy danych.
+Kolejną istotną czynnością jest przygotowanie makiet interfejsów. Należy przedstawić makietę dla każdego widoku.
+Ważne aby opracować standardy pracy. Praca powinna powstawać w zgodzie z wysokimi standardami rozwijania aplikacji.
+Po zakończeniu prac projektowych możliwe jest rozpoczęcie prac implementacyjnych. Implementację należy podzielić na dwie części: część odpowiadającą za interakcję z użytkownikiem, tj. front-end oraz część odpowiadającą za logikę aplikacji, tj. back-end.
+W trakcie pisania pracy powinny powstawać testy jednostkowe. Po dodaniu każdej nowej funkcjonalności wszystkie testy powinny wykonywać się poprawnie.
+Po zakończeniu prac implementacyjnych należy aplikację poddać testom poprawności działania oraz poprawić wykryte błędy.
+Praca składa się ze wstępu, 6 rozdziałów, zakończenia oraz spisu literatury. W rozdziale pierwszym przedstawiono wstępne wymagania wymagania aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych. W rozdziale drugim dokonano analizy literaturowej oraz przeglądu dostępnego oprogramowania i narzędzi, które będą wykorzystane w procesie implementacji. Rozdział trzeci prezentuje szczegółowe wymagania dotyczące aplikacji. Najważniejszą częścią pracy są rozdziały czwarty, piąty oraz szósty. Rozdział czwarty przedstawia projekt aplikacji webowej wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych. Przedstawione zostaną tam szczegółowo funkcjonalności systemu, makiety interfejsów, schemat bazy danych, wykorzystane wzorce oraz zasady programowania wykorzystane w aplikacji. W rozdziale piątym zostanie przedstawiony przebieg implementacji. Będą opisane szczegółowo technologie wykorzystane w
+10
+aplikacji, a następnie zaprezentowane będą diagramy rozmieszczenia i pakietów. W rozdziale szóstym opisana będzie konfiguracja aplikacji oraz instrukcja instalacji i obsługi aplikacji. W zakończeniu zaprezentowane zostaną wnioski z pracy oraz zalecenia dotyczące kolejnych prac.
+
+12
+Rozdział 1
+Wymagania projektowe aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych
+Opracowanie aplikacji ma na celu pomoc użytkownikom systemu w składaniu deklaracji na podatki lokalne. Główną funkcjonalnością aplikacji jest generowanie trzech rodzajów deklaracji, tj. deklaracji na podatek od nieruchomości, podatek rolny oraz podatek leśny.
+Użytkownikami aplikacji będą osoby prawne posiadające mienie w postaci nieruchomości, gruntów lub lasów. Liczba użytkowników zależna jest od liczby mieszkańców obszaru podatkowego. Aplikacja przewiduje, że z aplikacji może korzystać 1000 użytkowników. System, który powstanie będzie aplikacją webową. Aplikacja zostanie uruchomiona na serwerze zewnętrznym. Dostęp do niej będzie można uzyskać z przeglądarki internetowej podając adres IP serwera oraz port, na którym została uruchomiona. Korzystanie z głównej funkcjonalności, tj. generowania deklaracji na podatek lokalny, będzie uwarunkowane posiadaniem konta.
+Funkcjonalności, które aplikacja wspomagająca sporządzanie deklaracji na podatki lokalne dla osób prawnych powinna zapewniać:
+logowanie pozwalające uwierzytelnić użytkownika,
+autoryzacja umożliwiająca dokonanie weryfikacji uprawnień do poszczególnych usług systemu,
+wybór formularza deklaracji na jeden z trzech rodzajów podatków lokalnych,
+wypełnienie formularza deklaracji na poszczególne rodzaje podatków lokalnych,
+wygenerowanie dokumentu deklaracji na podstawie wcześniej wypełnionego formularza,
+wybranie domyślnej deklaracji, na podstawie, której kolejne wypełniane przez użytkownika formularze będą wstępnie wypełniane danymi,
+inicjowanie formularza danymi z domyślnej deklaracji, pozwalające na skrócenie procesu sporządzania deklaracji na podatek lokalny.
+Oprogramowanie, z którego powinien korzystać użytkownik do pracy z aplikacją wspomagającą sporządzanie deklaracji na podatki lokalne dla osób prawnych: • system operacyjny Windows, Linux, Mac,
+przeglądarka internetowa Google Chrome w wersji co najmniej 50.0.2661.
+Minimalne parametry sprzętu, z którego użytkownik powinien korzystać do pracy z aplikacją wspomagającą sporządzanie deklaracji na podatki lokalne dla osób prawnych:
+1,5 GB pamięci RAM,
+procesor klasy Intel Core i3 lub odpowiednik,
+rozdzielczość ekranu co najmniej 360x640 pikseli.
+Aplikacja będzie służyć jako produkt demonstracyjny. Konkretne instytucje zainteresowane wdrożeniem dla ich potrzeb zdefiniują swoje dodatkowe wymagania odnośnie aplikacji. Zostaną wówczas przeprowadzone negocjacje w sprawie warunków na jakich miałaby przebiegać implementacja dodatkowych funkcjonalności oraz wstępna wycena aplikacji. Aplikacja kierowana jest do wielu klientów, zarówno do podmiotów zobowiązanych do składania deklaracji jak i organów podatkowych mogących zaoferować podatnikom dogodną formę sporządzenia deklaracji oraz klientów indywidualnych zajmujących się zawodowo doradztwem podatkowym.
+Aplikacja powinna być tworzona w zgodzie z powszechnie znanymi standardami tworzenia aplikacji webowych [5]. Kod źródłowy musi być pisany w sposób czysty i zrozumiały dla innych programistów. Konieczna jest możliwość rozszerzenia funkcjonalności aplikacji w przyszłości, chociażby poprzez przystosowanie aplikacji do dodawania kolejnych języków pracy z systemem. Aplikacja powinna zostać właściwie przetestowana. Technologie wykorzystane w pracy muszą być odpowiednio przemyślane i właściwie dobrane do aktualnych oraz w miarę możliwości przyszłych potrzeb aplikacji.
+Rozdział 2
+Analiza literaturowa, stan wiedzy i techniki w zakresie rozwijania aplikacji webowych
+2.1.	Przegląd istniejących rozwiązań
+Nie znaleziono żadnego rozwiązania, które oferowałoby wymaganą główną funkcjonalność generowania deklaracji na podatki lokalne dla osób prawnych. Rozwiązanie, które zainspirowało autora dotyczy deklaracji podatkowej PIT. Obecnie istnieje wiele takich aplikacji. Jedną z nich jest aplikacja e-pity[35]. Daje ona duże możliwości użytkownikowi, jednak nie dostarcza funkcjonalności generowania deklaracji na podatki lokalne. Mimo wszystko można wykorzystać aplikację jako wzór, ponieważ jest dość intuicyjna.
+Aplikacja e-pity dostarcza dwie drogi użytkownikowi. Pierwsza pozwala na przejście kolejnych kroków formularza w celu wygenerowania deklaracji. W innowacyjny sposób rozwiązany został problem wyboru formularza deklaracji dla potrzeb podatnika. Odpowiada on na pytania, natomiast aplikacja sama wybiera odpowiedni formularz. Podobne podejście zostanie zastosowane w aplikacji, która będzie opracowana w ramach pracy, z wyjątkiem tego, że użytkownik systemu sam będzie musiał wybrać deklarację, której formularz chce wypełniać. Druga droga, którą udostępnia aplikacja to interaktywna deklaracja. Rozwiązanie to nie zostanie zaimplementowane w ramach pracy.
+Istniejąca aplikacja do tworzenia deklaracji na podatki dochodowe jest aplikacją niezależną, instalowaną na danym komputerze. Zaletą takiego rozwiązania jest to, że nie wymaga łączności z internetem. Wadą jest konieczność instalowania oprogramowania na każdym komputerze, na którym chcemy korzystać z aplikacji. Jest to wada na tyle istotna, że aplikacja w ramach bieżącej pracy zostanie zrealizowana w technologii webowej. Przy tym rozwiązaniu istotnie zyska mobilność aplikacji. Wszystkie dane przechowywane są na serwerze zewnętrznym. Użytkownik nie musi się martwić o ich przenoszenie, czy bezpieczeństwo. Wystarczy, że będzie dbał o bezpieczeństwo danych autentykacji swojego konta.
+2.2. Przydatne techniki i technologie wykorzystywane do rozwijania aplikacji webowych
+Aplikacja opracowana w ramach pracy będzie wykonana w technologii webowej. Część widoczna dla użytkownika nazywana dalej front-endem zostanie napisana w AngularJS. Część logiczna, tj. back-end, zostanie napisana w Spring Boot.
+Do wygenerowania szkieletu aplikacji posłuży narzędzie JHipster [28]. Jest to program służący do generowania aplikacji, korzystających z AngularJS oraz Spring Boot. Dodane zostaną automatycznie potrzebne zależności. Wygenerowana będzie aplikacja korzystająca z:
+1. AngularJS [9],
+2. Bootstrap [11],
+3. Spring Boot [20],
+4. Maven [29],
+5. MariaDB [30],
+6. Hibernate [23].
+Ad 1. Do tworzenia aplikacji po stronie front-endu wykorzystany zostanie framework AngularJS oparty na języku JavaScript. Jedną z jego zalet jest łatwe dynamiczne zarządzanie treścią na stronie, co zostanie wykorzystane w aplikacji wspomagającej sporządzanie deklaracji na podatki lokalne dla osób prawnych podczas wyliczania należnego podatku za konkretne aktywa oraz na bieżąco sprawdzając poprawność kolejno wypełnianych pól formularza. Inną ważną cechą frameworka jest obsługa obiektów. Dobra serializacja wykorzystana będzie podczas zapisywania danych dotyczących deklaracji do bazy danych. Deserializacja obiektów zostanie użyta podczas pobierania danych dotyczących już wypełnionych deklaracji. Dzięki modularności aplikacji korzystających z AngularJS istnieje możliwość wykorzystania napisanych już wcześniej bibliotek w języku JavaScript. W aplikacji wykorzystana zostanie jedna z bibliotek ułatwiających operacje matematyczne na danych.
+Ad 2. W zakresie wyglądu aplikacji wykorzystany zostanie framework Bootstrap, gdyż posiada ogromne możliwości oraz znacznie ułatwia tworzenie atrakcyjnych oraz responsywnych stron internetowych.
+Ad 3. Logikę aplikacji dostarczy Spring Boot. Spring [1] ułatwia wstrzykiwanie zależności w projekcie. Aplikacja korzysta z wbudowanego serwera Apache Tomcat. Spring Boot jest rozszerzeniem frameworka Spring. Spring to framework języka Java ułatwiający spełnienie jednej z 5 zasad SOLID [38], tj. zasadę odwracania zależności. Może być wykorzystywany w dowolnej aplikacji pisanej w języku Java. Najczęściej znajduje zastosowanie podczas tworzenia aplikacji webowych.
+Ad 4. Do pobierania bibliotek, zarządzania zależnościami oraz budowania projektu użyty zostanie Maven. Jest oprogramowaniem zarządzającym projektem.
+Ad 5. Jako baza danych w aplikacji zostanie wykorzystana MariaDB. Powodem wykorzystania tej bazy jest stosunkowo niewielka liczba użytkowników, która musi zostać obsłużona. Baza jest mało wymagająca, więc okazuje się być najlepszym rozwiązaniem.
+Ad 6. Narzędziem służącym do zamiany obiektów na relacje [34] w bazie danych oraz relacji w bazie na obiekty będzie Hibernate [22].
+W pracy będzie wykorzystana zupełnie nowa dla autora technologia AngularJS. Została wybrana przede wszystkim ze względu na chęć poznania podstaw jednej z najbardziej popularnych obecnie metod tworzenia dynamicznych aplikacji webowych. Bootstrap ułatwi utrzymanie zewnętrznej estetyki aplikacji. Autor posiada doświadczenie zawodowe w tworzeniu aplikacji webowych z użyciem Spring Boot.
+Autor wykorzysta następujące narzędzia do wytworzenia aplikacji:
+1. IntelliJ IDEA [25],
+2. Sublime Text [40],
+3. emma [18],
+4. phpMyAdmin [36],
+5. git [19],
+6. GitLab [14],
+7. Google Chrome [13],
+8. Gulp [21],
+9. npm [33],
+10. Bower [12],
+11. NGINX [42],
+12. Tomcat [10].
+Ad 1. Większość kodu źródłowego zostanie napisana w środowisku programistycznym IntelliJ IDEA. Jest to jedno z najlepszych oraz najbardziej popularnych środowisk programistycznych.
+Ad 2. Do szybkich i prostych edycji kodu będzie wykorzystany Sublime Text. Bardzo wygodnie się z niego korzysta, ponieważ uruchomienie edytora tekstowego zajmuje kilkanaście razy mniej czasu niż uruchomienie całego środowiska.
+Ad 3. i 4. Jako baza danych zarówno w procesie rozwijania aplikacji, jak i w procesie produkcyjnym zostanie wykorzystana MariaDB. Do przeglądania bieżących danych zostanie wykorzystane środowisko graficzne emma oraz phpMyAdmin. Pierwsze z nich będzie wykorzystywane podczas pracy z systemem Linux, natomiast drugie z systemem Windows.
+Ad 5. Jako system kontroli wersji wykorzystany będzie git. Został uznany przez autora za najlepszy, ponieważ w łatwy sposób umożliwia pracę nad większą liczbą funkcjonalności.
+Ad 6. Rozwijana aplikacja przechowywana będzie w repozytorium GitLab. Repozytorium zostało wybrane, ponieważ istnieje możliwość założenia darmowego prywatnego repozytorium.
+Ad 7. Do oglądania postępów pracy, testowania oraz znajdowania błędów w aplikacji zostanie wykorzystana przeglądarka internetowa Google Chrome.
+Ad 8. Do budowania części front-endowej aplikacji oraz do bieżącego wstrzykiwania zależności posłuży Gulp.
+Ad 9. i 10. Do pobierania i instalowania istniejących bilbiotek napisanych w języku JavaScript wykorzystane zostaną Bower oraz npm.
+Ad 11. Jako serwer WWW użyty zostanie NGINX, gdzie uruchomiona będzie część front-endowa aplikacji.
+Ad 12. Jako serwer aplikacji zostanie wykorzystany Tomcat i stanie się kontenerem, w którym aplikacja będzie uruchomiona.
+2.3.	Podsumowanie i wnioski
+Opierając się na spostrzeżeniach wielu programistów oraz użytkowników można wywnioskować, iż intuicyjność graficznego interfejsu użytkownika jest jedną z części pracy, którą powinno się poprawiać, rozwijać i doskonalić. Wobec tego został zastosowany framework Bootstrap. Na każdej stronie powinna być odpowiednio dobrana liczba kluczowych punktów, na których użytkownik powinien skupić swoją uwagę.
+Możliwość korzystania z aplikacji na wielu komputerach bez konieczności przenoszenia danych jest dla autora ważniejsza niż potencjalne zagrożenie awarii serwera. Dlatego, aplikacja powstanie w technologii webowej.
+Autor założył, iż należy wykorzystać zarówno technologie, z którymi jest zaznajomiony oraz takie, których musi nauczyć się od podstaw, gdyż proces tworzenia powinien być kształcący.
+Większość narzędzi, które zostaną wykorzystane są już dobrze poznane. Pojawiają się również narzędzia, z którymi autor nie miał nigdy styczności. Wykorzystywane oprogramowanie jest powszechnie znane, co daje dużą pomoc techniczną na forach internetowych. Zostało ono również wybrane ze względu na warunki licencyjne. Każda licencja pozwala na darmowe wykorzystanie oprogramowania przynajmniej do celów niekomercyjnych.
+Rozdział 3
+Założenia projektowe aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych
+Celem pracy jest opracowanie aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych. Wytworzone oprogramowanie ma ułatwić wielokrotne wypełnianie formularza, przez inicjowanie danymi z domyślnego formularza, wyliczanie oraz wypełnianie właściwych pól danymi.
+Wymagania funkcjonalne, które powinna zapewniać aplikacja wspomagająca sporządzanie deklaracji na podatki lokalne dla osób prawnych:
+aplikacja powinna umożliwiać autentykację użytkownika,
+aplikacja powinna umożliwiać autoryzację użytkownika,
+aplikacja powinna umożlwiać rejestrację użytkownika,
+aplikacja powinna umożliwiać wypełnienie trzech rodzajów formularzy, tj. na podatek od nieruchomości, podatek rolny, podatek leśny,
+aplikacja powinna walidować każde pole wypełnianego formularza,
+aplikacja powinna obliczać kwotę podatku dla każdego rodzaju środków,
+aplikacja powinna umożliwiać generowanie deklaracji na podatki lokalne na podstawie wypełnionego wcześniej formularza,
+aplikacja powinna pozwalać na wybranie domyślnego formularza, który będzie wykorzystany do wstępnej inicjalizacji następnych,
+aplikacja powinna umożliwiać usunięcie konta użytkownika systemu przez użytkownika z uprawnieniami administratora,
+aplikacja powinna umożliwiać utworzenie nowego konta dla użytkownika z uprawnieniami ustalanymi przez administratora,
+aplikacja powinna umożlwiać administratorowi edycję danych użytkownika,
+aplikacja powinna umożliwiać administratorowi sprawdzenie jaki status miały komunikaty zwracane przez system,
+aplikacja powinna umożliwiać administratorowi przeglądanie statystyk systemu, aby sprawdzić, jakie usługi systemu są najczęściej wykorzystywane.
+Wymagania niefunkcjonalne, które powinna spełniać aplikacja wspomagająca sporządzanie deklaracji na podatki lokalne dla osób prawnych:
+aplikacja powinna być responsywna, więc korzystanie na urządzeniach z różnymi rozdzielczościami powinno być komfortowe
+aplikacja powinna obsługiwać co najmniej 1000 użytkowników,
+komputer, z którego korzysta użytkownik powinien posiadać co najmniej 1,5 GB pamięci RAM,
+procesor w komputerze powinien być co najmniej klasy procesora Intel Core i3,
+minimalna przepustowość łącza internetowego powinna wynosić 5 Mb.,
+użytkownik powinien posiadać myszkę i klawiaturę w celu komfortowego korzystania z aplikacji,
+błąd popełniony przez użytkownika nie może wpływać na działanie aplikacji,
+strona powinna być wyświetlona maksymalnie po 5 sekundach,
+rejestracja w systemie nie powinna zajmować więcej niż 8 minut dla przeciętnego użytkownika,
+nazwy zmiennych w kodzie źródłowym powinny być w języku angielskim,
+aplikacja powinna być uruchomiona na zewnętrznym serwerze.
+Aplikacja zostanie opracowana w architekturze klient-serwer. Uruchomiona będzie na zewnętrznym serwerze z publicznym adresem IP z dozwolonym dostępem do portu, na którym będzie można znaleźć uruchomiony serwer WWW.
+Serwer WWW, który umożliwi korzystanie z front-endu to NGINX. Dzięki właściwej konfiguracji pozwoli na korzystanie z aplikacji wyłącznie przez podanie adresu IP.
+Część back-endowa skorzysta z wbudowanego w Spring Boot serwera aplikacji Tomcat.
+Aplikacja będzie uruchomiona na porcie ustawionym w konfiguracji aplikacji.
+Na tym samym zewnętrznym serwerze uruchomiona będzie baza danych MariaDB.
+Rozdział 4
+Projekt aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych
+W niniejszym rozdziale zaprezentowany zostanie projekt aplikacji wspomagającej sporządzanie deklaracji na podatki lokalne dla osób prawnych. Projekt zawiera diagram przypadków użycia [15]. Każdy przypadek użycia został krótko opisany. Przedstawiono jego ścieżkę główną oraz w razie konieczności ścieżkę alternatywną. W dalszej części rozdziału zaprezentowano projekt interfejsów. Następnie zaprezentowano projekt bazy danych. Potem omówiono zastosowane wzorce oraz zasady dobrego programowania, które będą wykorzystane w aplikacji.
+4.1.	Przypadki użycia
+W tym podrozdziale zostanie przedstawiony diagram przypadków użycia. Następnie zaprezentowane będą kolejno wszystkie przypadki użycia.
+Na rysunku 4.1 przedstawiono diagram przypadków użycia projektowanej aplikacji. Diagram przedstawia graficznie funkcjonalności systemu, tak jak są one widziane po stronie użytkownika.
+Poniżej zostały opisane przypadki użycia aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych:
+1. Rejestracja,
+2. Logowanie,
+3. Usunięcie konta użytkownika,
+4. Przeglądanie statusów zwracanych przez usługi,
+5. Przeglądanie statystyk dotyczących systemu,
+6. Wypełnienie formularza deklaracji,
+7. Wybór rodzaju deklaracji podatkowej,
+8. Wypełnianie danych dotyczących deklaracji,
+9. Obliczanie należnego podatku,
+10. Zbieranie danych w postaci obiektu,
+11. Zapisanie do bazy danych,
+12. Przeglądanie listy wypełnionych formularzy, 13. Wygenerowanie deklaracji w postaci dokumentu,
+14. Wybranie domyślnego formularza.
+
+Rys. 4.1. Diagram przypadków użycia
+Ad 1. Przypadek użycia Rejestracja ma na celu umożliwienie zarejestrowania nowego użytkownika systemu. Konto użytkownika jest aktywne bezpośrednio po potwierdzeniu poprawności wprowadzonych danych.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Rejestracja:
+1. System wyświetla formularz rejestracyjny.
+2. Użytkownik wypełnia formularz rejestracyjny.
+3. System stwierdza, że formularz rejestracyjny został wypełniony poprawnie, rejestruje nowego użytkownika.
+Poniżej przedstawiono ścieżkę alternatywną przypadku użycia Rejestracja:
+3.
+3.a. System stwierdza, że formularz zawiera błędy.
+3.a.1. Użytkownik poprawia błędy.
+3.a.1.a. Przejdź do 3.
+3.a.2. Użytkownik rezygnuje.
+3.a.2.a. Zakończ.
+Ad 2. Przypadek użycia Logowanie ma na celu umożliwienie zalogowania użytkownikowi. Wraz z zalogowaniem przeprowadzana jest autoryzacja uprawnień. System rozróżnia dwa typy użytkowników: administratora i użytkownika.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Logowanie:
+1. System wyświetla formularz logowania.
+2. Użytkownik podaje login oraz hasło.
+3. System stwierdza poprawną autentykację użytkownika.
+Poniżej przedstawiono ścieżkę alternatywną przypadku użycia Logowanie:
+3.
+3.a. System stwierdza, błędny login lub hasło.
+3.a.1. Użytkownik ponownie wpisuje dane.
+3.a.1.a. Przejdź do 3.
+3.a.2. Użytkownik rezygnuje.
+3.a.2.a. Zakończ.
+Ad 3. Przypadek użycia Usunięcie konta użytkownika ma na celu umożliwienie usunięcia konta użytkownika. Dostęp do usługi posiada wyłącznie administrator.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Usunięcie konta użytkownika:
+1. Administrator wybiera usunięcie użytkownika.
+2. System usuwa użytkownika.
+Poniżej przedstawiono ścieżkę alternatywną przypadku użycia Usunięcie konta użytkownika:
+2.
+2.a. System stwierdza, że użytkownika nie można usunąć ponieważ jest nim sam zalogowany.
+2.a.1. Administrator wybiera innego użytkownika do usunięcia.
+2.a.1.a. Przejdź do 2.
+2.a.2. Administrator rezygnuje.
+2.a.2.a. Zakończ.
+Ad 4. Przypadek użycia Przeglądanie statusów zwracanych przez usługi ma na celu możliwość sprawdzenia, czy w systemie wystąpiły błędy. Dostęp do usługi posiada jedynie aministrator.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Przeglądanie statusów zwracanych przez usługi:
+1. Administrator wybiera pokazanie statusów zwracanych przez usługi.
+2. System wyświetla ostatnio zwracane statusy przez usługi systemu.
+Ad 5. Przypadek użycia Przeglądanie statystyk dotyczących systemu ma na celu wyświetlenie statystyk dotyczących systemu. Pozwala na stwierdzenie w jakich godzinach użytkownicy najczęściej korzystają z sytemu, z jakich usług systemu korzystają najczęściej.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Przeglądanie statystyk dotyczących systemu:
+1. Administrator wybiera przeglądanie statystyk systemu.
+2. System wyświetla statystyki systemu.
+Ad 6. Przypadek użycia Wypełnienie formularza deklaracji ma na celu umożliwienie użytkownikowi wypełnienia deklaracji na podatek lokalny.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Wypełnienie formularza deklaracji:
+1. Użytkownik wybiera wypełnienie nowej deklaracji.
+2. System wyświetla możliwe do wyboru deklaracje.
+Ad 7. Przypadek użycia Wybór rodzaju deklaracji podatkowej ma na celu wybór jednego z trzech rodzajów formularzy deklaracji na podatki lokalne.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Wybór rodzaju deklaracji podatkowej:
+1. Użytkownik wybiera jedną z trzech deklaracji.
+2. System wyświetla wielokrokowy formularz deklaracji.
+Ad 8. Przypadek użycia Wypełnianie danych dotyczących deklaracji ma na celu wyświetlenie stron z polami do wypełnienia, służącymi do gromadzenia informacji o mieniu użytkownika.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Wypełnianie danych dotyczących deklaracji:
+1. Użytkownik wypełnia danymi kolejne pola formularza.
+Ad 9. Przypadek użycia Obliczanie należnego podatku ma na celu obliczanie na bieżąco należnego podatku dotyczącego każdego z aktywów.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Obliczanie należnego podatku:
+1. System oblicza i wyświetla obliczoną wartość podatku dla każdego rodzaju aktywów. Poniżej przedstawiono ścieżkę alternatywną przypadku użycia Obliczanie należnego podatku:
+1.
+1.a. System stwierdza, że dane są niepoprawnego typu. Nie wyświetla żadnej wartości.
+Ad 10. Przypadek użycia Zbieranie danych w postaci obiektu ma na celu utworzenie obiektu gromadzącego dane dotyczące użytkownika oraz jego aktywów.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Zbieranie danych w postaci obiektu:
+1. System zbiera dane w postaci obiektu.
+Ad 11. Przypadek użycia Zapisanie do bazy danych ma na celu przygotowanie struktury bazy danych, a następnie operacji zapisu i odczytu obiektów deklaracji podatkowych. Poniżej przedstawiono ścieżkę główną przypadku użycia Zapisanie do bazy danych:
+1. Użytkownik stwierdza poprawność wypełnionych danych.
+2. System zapisuje zgromadzone dane do bazy danych.
+Ad 12. Przypadek użycia Przeglądanie listy wypełnionych formularzy ma na celu wyświetlenie listy wypełnionych do tej pory formularzy.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Przeglądanie listy wypełnionych formularzy:
+1. System wyświetla listę już wypełnionych formularzy.
+Ad 13. Przypadek użycia Wygenerowanie deklaracji w postaci dokumentu ma na celu wygenerowanie deklaracji, w postaci pliku PDF, uzupełnionej danymi zebranymi podczas wypełniania formularza deklaracji.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Wygenerowanie deklaracji w postaci dokumentu:
+1. Użytkownik wybiera formularz na podstawie, którego ma zostać wygenerowany dokument deklaracji.
+2. System generuje deklarację.
+Ad 14. Przypadek użycia Wybranie domyślnego formularza ma na celu umożliwienie wybrania domyślnego formularza deklaracji. Kolejne formularze będą wstępnie wypełniane danymi z domyślnego formularza.
+Poniżej przedstawiono ścieżkę główną przypadku użycia Wybranie domyślnego formularza:
+1. Użytkownik wybiera domyślną deklarację. 2. System ustawia deklarację jako domyślną.
+4.2.	Interfejs
+W tym podrozdziale zaprezentowane zostaną makiety interfejsów użytkownika. Zostały one zaprojektowane od razu jako gotowe widoki, co sprawi, że po implementacji będą się znacząco mniej różniły niż byłoby to w przypadku makiet zaprojektowanych w narzędziach do projektowania interfejsów. Uszeregowane zostały w kolejności występowania widoków w poszczególnych krokach formularza.
+
+Rys. 4.2. Wybór rodzaju podatku
+
+Rys. 4.3. Informacje wstępne formularza na podatek od nieruchomości
+Na rysunku 4.2 przedstawiony jest ekran z możliwością wyboru jednego z trzech formularzy na podatki lokalne. Wybór skutkuje dostosowaniem kolejnych ekranów do potrzeb konkretnej deklaracji. Widok dostępny bezpośrednio po zalogowaniu jedynie dla nowego użytkownika, kiedy nie posiada jeszcze żadnego sporządzonego formularza deklaracji. Jeżeli użytkownik wypełniał już wcześniej deklarację i została ona zapisana, po zalogowaniu wyświetla się widok z tymi deklaracjami. Widok został zaproponowany, aby użytkownik nie otrzymywał widoku z pustymi listami wypełnionych deklaracji.
+Na rysunku 4.3 przedstawiony jest ekran na którym użytkownik wypełnia pola z informacjami wstępnymi. Są to podstawowe informacje dotyczące deklaracji na podatek od nieruchomości, tj. NIP, rok składania deklaracji, rodzaj własności oraz czy jest to deklaracja podstawowa, czy korygująca. Możliwość przejścia dalej pojawia się dopiero, gdy wszystkie dane są poprawne.
+
+Rys. 4.4. Dane osobowe podmiotu w formularzu deklaracji na podatek od nieruchomości
+Na rysunku 4.4 przedstawiony jest ekran dotyczący danych osobowych użytkownika w deklaracji na podatek od nieruchomości. Wypełnienie wszystkich danych w tej karcie jest obligatoryjne. Dla wszystkich pól sprawdzany jest poprawny typ oraz format wprowadzanych danych. Aby przejść dalej, wszystkie pola formularza muszą zostać uznane za poprawne. Istnieje możliwość powrotu do poprzedniej strony bez utraty bieżąco wypełnianych danych.
+
+Rys. 4.5. Dane adresowe osoby prawnej formularza na podatek od nieruchomości
+Na rysunku 4.5 przedstawiony jest ekran dotyczący adresu podatnika deklaracji na podatek od nieruchomości. Przejście na kolejną stronę będzie możliwe po sprawdzeniu poprawności wszystkich pól. Jeżeli użytkownik zdecyduje się wrócić do poprzedniego widoku wypełnione dane bieżącego ekranu nie zostaną utracone.
+
+Rys. 4.6. Adres do korespondencji osoby prawnej formularza na podatek od nieruchomości
+Na rysunku 4.6 przedstawiony jest widok dotyczący adresu do korespondencji deklaracji na podatek od nieruchomości. Jeżeli w poprzednim ekranie użytkownik zdecydował, że adres do korespondencji jest inny niż podstawowy jest zobligowany do wypełnienia wszystkich pól formularza. Możliwość przejścia dalej pojawia się wówczas, gdy wszystkie dane są poprawne. Jeżeli użytkownik zdecyduje się wrócić do poprzedniego widoku wypełnione dane bieżącego ekranu nie zostaną utracone.
+
+Rys. 4.7. Widok gruntów formularza na podatek od nieruchomości
+Na rysunku 4.7 przedstawiony jest widok dotyczący gruntów w formularzu deklaracji na podatek od nieruchomości. Jest to pierwszy z czterech kroków, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.8. Widok budynków formularza na podatek od nieruchomości
+Na rysunku 4.8 przedstawiony jest widok dotyczący budynków w formularzu deklaracji na podatek od nieruchomości. Jest do drugi ekran z czterech, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.9. Widok gruntów zwolnionych z podatku formularza na podatek od nieruchomości
+Na rysunku 4.9 przedstawiony jest widok dotyczący gruntów zwolnionych z podatku w formularzu deklaracji na podatek od nieruchomości. Jest do trzeci ekran z czterech, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.10. Widok budynków zwolnionych z podatku formularza na podatek od nieruchomości
+Na rysunku 4.10 przedstawiony jest widok dotyczący budynków zwolnionych z podatku w formularzu deklaracji na podatek od nieruchomości. Jest do czwarty i ostatni ekran, w których podatnik podaje dane dotyczące posiadanych aktywów. Istnieje tutaj opcja Zakończ zamiast Dalej. Po zakończeniu użytkownik zostanie przeniesiony do widoku z deklaracjami.
+Rysunki: 4.7, 4.8, 4.9, 4.10, przedstawiają widoki dotyczące formularza deklaracji na podatek od nieruchomości. Wszystkie pola są typu zmiennoprzecinkowego i zostały zainicjalizowane wartością 0. Aby przejść do następnego kroku wszystkie elementy w karcie muszą przejść pozytywnie sprawdzenie poprawności. Istnieje możliwość przeniesienia się do poprzedniego kroku formularza bez utraty wprowadzonych danych. Należna kwota podatku dla każdego rodzaju gruntów obliczana jest na bieżąco.
+
+Rys. 4.11. Informacje wstępne formularza na podatek rolny
+Na rysunku 4.11 przedstawiony jest ekran na którym użytkownik wypełnia pola informacjami wstępnymi. Są to podstawowe informacje dotyczące deklaracji na podatek rolny, tj. NIP, rok składania deklaracji, rodzaj własności oraz czy jest to deklaracja podstawowa, czy korygująca. Aby przejść dalej wszystkie pola muszą przejść sprawdzenie poprawności w całości.
+Na rysunku 4.12 przedstawiony jest ekran dotyczący danych osobowych użytkownika deklaracji na podatek rolny. Wypełnienie wszystkich danych w tej karcie jest obligatoryjne. Dla wszystkich pól sprawdzany jest poprawny typ oraz format wprowadzanych danych. Aby przejść dalej, wszystkie pola formularza muszą zostać uznane za poprawne. Istnieje możliwość powrotu do poprzedniej strony bez utraty wypełnionych danych na bieżącej stronie.
+
+Rys. 4.12. Dane osobowe osoby prawnej formularza na podatek rolny
+
+Rys. 4.13. Dane adresowe osoby prawnej formularza na podatek rolny
+Na rysunku 4.13 przedstawiony jest ekran dotyczący adresu podatnika deklaracji na podatek rolny. Aby uzyskać możliwość przejścia na kolejną stronę wszystkie pola muszą przejść sprawdzenie poprawności. Jeżeli użytkownik zdecyduje się wrócić do poprzedniego widoku wypełnione dane bieżącego ekranu nie zostaną utracone.
+
+Rys. 4.14. Widok gruntów ornych formularza na podatek od rolny
+Na rysunku 4.14 przedstawiony jest widok dotyczący gruntów ornych w formularzu deklaracji na podatek rolny. Pierwszy z dziesięciu ekranów, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.15. Widok łąk i pastwisk formularza na podatek rolny
+Na rysunku 4.15 przedstawiony jest widok dotyczący łąk i pastwisk w formularzu deklaracji na podatek rolny. Drugi z dziesięciu ekranów, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.16. Widok sadów formularza na podatek rolny
+Na rysunku 4.16 przedstawiony jest widok dotyczący sadów w formularzu deklaracji na podatek rolny. Trzeci z dziesięciu ekranów, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.17. Widok gruntów ornych pod stawami niezarybionymi formularza na podatek
+rolny
+Na rysunku 4.17 przedstawiony jest widok dotyczący gruntów pod stawami niezarybionymi w formularzu deklaracji na podatek rolny. Czwarty z dziesięciu ekranów, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.18. Widok łąk i pastwisk pod stawami niezarybionymi formularza na podatek rolny
+Na rysunku 4.18 przedstawiony jest widok dotyczący łąk i pastwisk pod stawami niezarybionymi w formularzu deklaracji na podatek rolny. Piąty z dziesięciu ekranów, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.19. Widok zabudowanych gruntów ornych formularza na podatek rolny
+Na rysunku 4.19 przedstawiony jest widok dotyczący zabudowanych gruntów ornych w formularzu deklaracji na podatek rolny. Szósty z dziesięciu ekranów, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.20. Widok zabudowanych łąk i pastwisk formularza na podatek rolny
+Na rysunku 4.20 przedstawiony jest widok dotyczący zabudowanych łąk i pastwisk w formularzu deklaracji na podatek rolny. Siódmy z dziesięciu ekranów, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.21. Widok rowów na gruntach ornych formularza na podatek rolny
+Na rysunku 4.21 przedstawiony jest widok dotyczący rowów na gruntach ornych w formularzu deklaracji na podatek rolny. Ósmy z dziesięciu ekranów, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.22. Widok rowów na łąkach i pastwiskach formularza na podatek rolny
+Na rysunku 4.22 przedstawiony jest widok dotyczący rowów na łąkach i pastwiskach w formularzu deklaracji na podatek rolny. Dziewiąty z dziesięciu ekranów, w których podatnik podaje dane dotyczące posiadanych aktywów.
+
+Rys. 4.23. Widok pozostałych aktywów formularza na podatek rolny
+Na rysunku 4.23 przedstawiony jest widok dotyczący pozostałych aktywów w formularzu deklaracji na podatek rolny. Jest to dziesiąty i ostatni ekran, w których podatnik podaje dane dotyczące posiadanych aktywów. Istnieje tutaj opcja zakończ zamiast dalej.
+Po zakończeniu użytkownik zostanie przeniesiony do widoku z deklaracjami.
+Rysunki: 4.14, 4.15, 4.16, 4.17, 4.18, 4.19, 4.20, 4.21, 4.22, 4.23, przedstawiają widoki dotyczące formularza deklaracji na podatek rolny. Wszystkie pola są typu zmiennoprzecinkowego i zostały zainicjalizowane wartością 0. Aby przejść do następnego kroku wszystkie elementy w karcie muszą przejść pozytywnie sprawdzenie poprawności. Istnieje możliwość przeniesienia się do poprzedniego kroku formularza bez utraty wprowadzonych danych. Należna kwota podatku dla każdego rodzaju gruntów obliczana jest na bieżąco.
+
+Rys. 4.24. Informacje wstępne formularza na podatek leśny
+
+Rys. 4.25. Dane osobowe osoby prawnej formularza na podatek leśny
+Na rysunku 4.24 przedstawiony jest ekran na którym użytkownik wypełnia pola informacjami wstępnymi. Są to podstawowe informacje dotyczące deklaracji na podatek leśny, tj. NIP, rok składania deklaracji, rodzaj własności oraz czy jest to deklaracja podstawowa, czy korygująca. Aby przejść dalej wszystkie pola muszą przejść sprawdzenie poprawności.
+Na rysunku 4.25 przedstawiony jest ekran dotyczący danych osobowych użytkownika deklaracji na podatek leśny. Wypełnienie wszystkich danych w tej karcie jest obligatoryjne. Dla wszystkich pól sprawdzany jest poprawny typ oraz format wprowadzanych danych. Aby przejść dalej, wszystkie pola formularza muszą zostać uznane za poprawne. Istnieje możliwość powrotu do poprzedniej strony bez utraty wypełnionych danych na bieżącej stronie.
+
+Rys. 4.26. Dane adresowe osoby prawnej formularza na podatek leśny
+
+Rys. 4.27. Widok lasów formularza na podatek leśny
+Na rysunku 4.26 przedstawiony jest ekran dotyczący adresu podatnika deklaracji na podatek leśny. Aby uzyskać możliwość przejścia na kolejną stronę wszystkie pola muszą przejść sprawdzenie poprawności. Jeżeli użytkownik zdecyduje się wrócić do poprzedniego widoku wypełnione dane bieżącego ekranu nie zostaną utracone.
+Na rysunku 4.27 przedstawiony jest jedyny widok aktywów w formularzu deklaracji na podatek leśny. Użytkownik podaje w nim informacje na temat posiadanego mienia. Po zakończeniu użytkownik zostanie przeniesiony do widoku z deklaracjami.Wszystkie pola są typu zmiennoprzecinkowego oraz zostały zainicjalizowane wartością 0. Aby ukończyć wypełnianie formularza wszystkie elementy muszą pozytywnie przejść sprawdzenie poprawności. Istnieje możliwość przeniesienia się do poprzednich widoków dotyczących informacji wstępnych bez utraty danych wypełnionych w bieżącym widoku.
+
+Rys. 4.28. Widok logowania
+Na rysunku 4.28 przedstawiony jest widok logowania. Aby korzystać z funkcjonalności aplikacji konieczne jest pozytywne przejście autentykacji. Po autentykacji następuje od razu autoryzacja użytkownika i otrzymuje on właściwy interfejs.
+
+Rys. 4.29. Widok listy użytkowników
+Na rysunku 4.29 przedstawiony jest widok użytkowników wraz z ich uprawnieniami. Istnieje możliwość podglądu szczegółowych informacji o użytkowniku lub edycja. Widok dostępny jest jedynie dla użytkownika z uprawnieniami administratora.
+
+Rys. 4.30. Widok tworzenia nowego użytkownika
+Na rysunku 4.30 przedstawiony jest widok tworzenia nowego użytkowika systemu przez użytkownika z uprawnieniami administratora. Istnieje możliwość nadania użytkownikowi nadania uprawnień administratora.
+
+Rys. 4.31. Widok statusów HTTP zwracanych przez serwer
+Na rysunku 4.31 przedstawione są statystyki zwracanych przez serwer statusów HTTP. Przedstawiona jest całkowita liczba zwróconych statusów oraz średnie w podanych przedziałach czasu.
+
+Rys. 4.32. Widok statystyk usług systemu
+Na rysunku 4.32 przedstawione są statystyki usług systemu. Dzięki niemu administrator może zbadać, z jakich usług systemu najczęściej korzystają użytkownicy.
+4.3.	Baza danych
+W tym podrozdziale przedstawiony zostanie projekt bazy danych. Najpierw zaprezentowany zostanie model domenowy [17]. W kolejnej części będą zaprezentowane diagram logiczny [16] oraz częściowy diagram fizyczny bazy danych. Mają na celu pokazanie powiązań między tabelami.
+
+Rys. 4.33. Model domenowy bazy danych
+Na rysunku 4.33 przedstawiony jest model domenowy bazy danych. Przedstawione zostały wszystkie połączenia między tabelami oraz reguły biznesowe.
+
+Rys. 4.34. Model logiczny bazy danych
+Na rysunku 4.34 przedstawiony jest model logiczny bazy danych. Ze względu na bardzo dużą liczbę klas przedstawione zostały jedynie podstawowe atrybuty oraz operacje.
+Zawiera wszystkie powiązania między tabelami oraz reguły biznesowe.
+
+Rys. 4.35. Fragment schematu bazy danych
+Na rysunku 4.35 przedstawiony jest fragment schematu bazy danych. Ze względu na dużą liczbę tabel przedstawiono jedynie część z nich. Zaprezentowano te, które dotyczą podatku leśnego, natomiast tabele odnoszące się do podatku rolnego i od nieruchomości zostały zrealizowane w analogiczny sposób. Istnieją tabele dotyczące informacji wstępnych oraz aktywów podatku. W bazie przechowywane są dane uzupełnione przez użytkownika oraz te, które zostały wyliczone. Oprócz tabel dotyczących deklaracji istnieją tabele dotyczące użytkownika oraz jego uprawnień.
+4.4.	Wzorzec architektoniczny
+W ramach pracy wykorzystany zostanie wzorzec architektoniczny Model-Widok-Kontroler [31]. Jego zastosowanie ułatwi wydzielenie trzech połączonych ze sobą części aplikacji. Każdej z nich przypisany jest inny rodzaj wykonywanych działań.
+Model odpowiada za logikę aplikacji, zarządzanie danymi oraz definiuje zasady korzystania z aplikacji. Przechowuje dane oraz wykonuje operacje na nich w zależności od poleceń kontrolera. Przekazuje dane do widoków w celu przedstawienia ich użytkownikowi.
+Widok odpowiada za zewnętrzną reprezentację danych pochodzących z modelu, na przykład na diagramach i wykresach.
+Kontroler jest łącznikiem między widokiem i modelem. Przyjmuje żądania z widoków, przetwarza je i przekazuje do modelu. Odpowiedź z modelu przekazywana jest do widoku. Żądania dotyczą najczęściej jednej z czterech funkcji znanych z akronimu CRUD:
+CREATE- dodawanie nowych danych,
+READ- odczyt danych, • UPDATE- modyfikacja danych,
+DELETE- usuwanie danych.
+4.5.	Zasady tworzenia oprogramowania
+Podstawowym założeniem, wykorzystywanym w procesie tworzenia aplikacji będzie otwartość na rozszerzanie funkcjonalności oraz zamknięcie na modyfikację już istniejących.
+Kolejną zasadą wykorzystaną w aplikacji będzie wykorzystywanie przez klienta interfejsów zamiast konkretnych implementacji.
+Jedną z głównych zalet zastosowania frameworka Spring [39] jest ułatwienie odwracania zależności [26], co powoduje, iż wysokopoziomowe moduły nie są zależne od niskopoziomowych. To kontener zarządza tworzeniem i dostarczaniem obiektów klientowi. Klient nie tworzy samodzielnie obiektów przy pomocy słowa kluczowego new. Obiekty są dostarczanie przez wstrzykiwanie.
+Zaprezentowany w poprzednich podrozdziałach projekt prezentuje zakres prac jakie powinny być wykonane w celu wytworzenia aplikacji. Zaprojektowano przypadki użycia, które prezentują funkcjonalność systemu oraz interfejsy, które przedstawiają widoki.
+Dzięki zakończeniu prac projektowych można przystąpić do zadań implementacyjnych.
+Rozdział 5
+Implementacja aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych
+Aplikacja wspomagająca sporządzanie deklaracji na podatki lokalne dla osób prawnych zostanie napisana w technologii webowej z wykorzystaniem frameworka Spring języka Java w wersji 3.1.3. Wykorzystywane oprogramowanie języka Java to Java Development Kit w wersji 1.8.0_102.
+Baza danych wykorzystana w aplikacji to MariaDB. Oprogramowania dostarczające graficzny interfejs użytkownika bazy danych wykorzystany w celu sprawdzenia poprawności dodawania danych do bazy to: emma, phpMyAdmin, MySQL Workbench.
+Środowisko programistyczne wykorzystane do rozwijania aplikacji to IntelliJ IDEA. Dostarcza formatowanie kodu źródłowego oraz wyróżnia kolorami poszczególne części kodu.
+Do edycji plików tekstowych oraz konfiguracji wykorzystane zostało narzędzie Sublime Text. Uruchamia się kilkanaście razy szybciej niż całe środowisko programistyczne dlatego było wygodne do niewielkich i szybkich edycji plików.
+Do wygenerowania podstawy aplikacji posłużył JHipster. Wynikiem pracy wyżej wymienionego narzędzia jest startująca aplikacja z frameworkiem Spring oraz rozszerzeniem
+Spring Boot w wersji 1.3.6. po stronie back-endu oraz frameworkiem AngularJS w wersji
+1.5.5.
+System kontroli wersji, wykorzystany w celu bepiecznego przechowywania historii kodu to git. Kod jest przechowywany na zewnętrznym repozytorium GitLab.
+Do testowania funkcjonalności aplikacji po stronie front-endu wykorzystana będzie przeglądarka Google Chrome.
+W dalszej części rozdziału zostanie zaprezentowana architektura systemu. Będą przedstawione diagramy rozmieszczenia oraz pakietów.
+
+Rys. 5.1. Diagram rozmieszczenia
+Na rysunku 5.1 przedstawiono diagram rozmieszczenia aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych. Aplikacja uruchamiana jest na zewnętrznym serwerze aplikacji w kontenerze Tomcat.
+
+Rys. 5.2. Diagram pakietów
+Na rysunku 5.2 przedstawiono uproszczony diagram pakietów. Uproszczony został w szczególności diagram pakietów części widoku.
+Proces implementacji przebiegł pomyślnie. Wszystkie zaprojektowane funkcjonalności zostały zaimplementowane. Praca była wykonywana zgodnie z zasadami dobrego programowania. Prace implementacji aplikacji zostały podzielone na dwie części: front-end oraz back-end. Aplikacja została skonfigurowana tak aby było możliwe uruchomienie jej na zewnętrznym serwerze.
+50
+Rozdział 6
+Konfiguracja, instalacja, instrukcja użytkowania aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych
+Konfiguracja aplikacji wspomagającej sporządzanie deklaracji na podatki lokalne znajduje się w zasobach aplikacji. Przechowywana jest w plikach napisanych w języku YAML. Pliki definiują port na którym aplikacja jest uruchamiana, tj. 8080. Użytkownik korzystający z bazy danych to: tax_user. Definiowana jest baza danych oraz sterowniki, tj. MaraDB.
+Aplikacja została spakowana do archiwum WAR [41]. Proces instalacji aplikacji polega na umieszczeniu archiwum war w odpowiednim miejscu na serwerze zewnętrznym oraz utworzeniu serwisu uruchamiającego aplikację podczas uruchamiania systemu. Jednorazowe uruchomienie aplikacji polega na wywołaniu z wiersza poleceń: java -jar declaracje.jar. Aplikacja po uruchomieniu będzie dostępna na porcie ustawionym w konfiguracji, tj. 8080.
+Aby skorzystać z aplikacji należy znać adres IP oraz port na którym zainstalowana została aplikacja. Należy korzystać z przeglądarki internetowej Google Chrome. W pasku adresu konieczne jest podanie adres IP lub domeny. Po przejściu do strony wyświetla się główna strona aplikacji.
+Aby skorzystać z usług aplikacji należy przejść pozytywnie czynność logowania. W zależności od tego, czy użytkownikowi przyznano uprawnienia administratora, czy użytkownika wyświetlona zostanie inna strona po zalogowaniu.
+W przypadku użytkowników bez dodatkowych uprawnień jeżeli jeszcze nie został wypełniony żaden formularz użytkownik zobaczy widok z trzema formularzami deklaracji do wyboru. Kiedy zostanie wybrana jedna z trzech opcji użytkownik zostanie przeniesiony do widoku z pustym formularzem.
+Przechodzenie przez kolejne widoki formularza wymaga wpisywania danych we właściwe pola. Dla większości pól zastosowane zostały wyrażenia regularne oraz ograniczenia w celu sprawdzenia poprawności. Wypełnienie wszystkich jest wymagane. Wymagana jest pozytywna weryfikacja poprawności danych, aby móc przejść do kolejnego widoku formularza. W dolnej części każdej karty formularza znajdują się przyciski nawigacji. Są one odpowiednio aktywowane w zależności od pozytywnej walidacji pól oraz widoczne w zależności od kroku formularza. Rozmieszczenie przycisków zależy od rozdzielczości ekranu. W przypadku wysokich rozdzielczości przyciski nawigacyjne umiejscowione są w tym samym miejscu w każdej karcie. W przypadku mniejszych znajdują się one poniżej ostatniego pola danej karty formularza.
+Jeżeli użytkownik korzystał już wcześniej z aplikacji i wypełnił przynajmniej jeden formularz deklaracji zostaje wówczas wyświetlony widok deklaracji. Widok ten umożliwia użytkownikowi zdefiniowanie domyślnej deklaracji. Jest to deklaracja, która zostanie wykorzystana jako szablon, przy wypełnianiu kolejnych formularzy. Pola w kartach zostaną wstępnie zainicjalizowane wartościami z domyślnej deklaracji. W widoku istnieje możliwość wypełnienia jednego z trzech formularzy deklaracji na podatki lokalne z wykorzystaniem szablonu oraz czystego formularza.
+Baza danych, z której korzysta aplikacja to MariaDB. Opis archiwizacji i przywracania danych znajduje się pod adresem [32].
+52
+Zakończenie
+W ramach pracy przygotowano projekt aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych. Projekt przedstawił wymagania dotyczące systemu. Po zaprojektowaniu aplikacji nastąpił proces implementacji, który przebiegł pomyślnie. Zaimplementowano wszystkie zaplanowane funkcjonalności. W pierwszej kolejności została zaimplementowana część front-endowa systemu. Dzięki posiadanym widokom w łatwy sposób można było przeprowadzić implementację części back-endowej znając wszystkie wymagane adresy usług. W procesie rozwijania aplikacji wykorzystano wiele narzędzi ułatwiających pisanie kodu źródłowego oraz testowanie aplikacji. Następnie odpowiednio skonfigurowano i zainstalowano aplikację.
+Przeprowadzono testy poprawności działania. W ramach kilku iteracji testów wykryto kilka błędów związanych z walidacją pól formularza oraz wyliczaniem podatku. Nie znaleziono błędów związanych z modelem logicznym. Po znalezieniu ostatniego błędu przeprowadzono jeszcze 10 iteracji testów poprawności działania. Nie znaleziono więcej błędów. Uznano, że przeprowadzone testy poprawności działania były wystarczające.
+Cel pracy, tj. opracowanie aplikacji wspomagającej tworzenie deklaracji na podatki lokalne dla osób prawnych, udało się zrealizować w zamierzonym czasie i przy zaplanowanym nakładzie pracy. Aplikacja jest produktem demonstracyjnym mogącym ułatwić osobom prawnym składanie deklaracji na podatki lokalne.
+Na podstawie przeprowadzonych prac implementacyjnych można wyciągnąć następujący wniosek, iż podstawą bezbłędnie działającej aplikacji jest dobre wykonanie prac projektowych. Istotna jest przynajmniej częściowa znajomość stosowanych technologii lub praca w środowisku osób korzystających z owych narzędzi.
+Każda kolejna aplikacja powinna być rozwijana na coraz wyższym poziomie. Dzięki pracy w zespole programistów możliwy jest większy rozwój niż przy pracy samodzielnej.
+Należy dążyć do pracy w kilku osobowych zespołach.
+54
+Bibliografia
+[1] Craig W., Spring w akcji, Wydanie IV, Gliwice HELION S.A. 2015, ISBN
+978-83-283-0849-7.
+[2] Dzięgiel-Matras A., Kmieciak H., Zenc R., Podatki lokalne 2016, Warszawa C.H.Beck 2015, ISBN 978-83-255-7982-1.
+[3] Etel L., Popławski M., Dowgier R., Gminny poradnik podatkowy, Warszawa TAXPRESS s.c. 2005, ISBN 83-915002-4-1.
+[4] Etel L., Popławski M., Presnarowicz S., Podatki i opłaty samorządowe w pytaniach i odpowidziach,Warszawa Międzykomunalna Spółka Akcyjna MUNICIPIUM 2000, ISBN 83-86691-55-7.
+[5] Martin R., Czysty kod. Podręcznik dobrego programisty, Gliwice HELION S.A 2014, ISBN 978-83-283-0234-1.
+[6] Ustawa z dnia 12 stycznia 1991 r. o podatkach i opłatach lokalnych (Dz. U. z 2016 r. poz. 716).
+[7] Ustawa z dnia 15 listopada 1984 r. o podatku rolnym (Dz. U. 2016 r. poz. 617).
+[8] Ustawa z dnia 30 października 2002 r. o podatku leśnym (Dz. U. 2016 poz. 374).
+Bibliografia internetowa
+[9] AngularJS — Superheroic JavaScript MVW Framework, [dostęp: 2016-11-15], [w:] https://angularjs.org.
+[10] Apache Tomcat® - Welcome!, [dostęp: 2016-11-02], [w:] http://tomcat.apache.org.
+[11] Bootstrap · The world’s most popular mobile-first and responsive front-end framework, [dostęp: 2016-11-02], [w:] http://getbootstrap.com.
+[12] Bower — a package manager for the web, [dostęp: 2016-11-02], [w:] https://bower.io.
+[13] Chrome na komputer, [dostęp: 2016-11-10], [w:] https://www.google.pl/chrome/browser/desktop.
+[14] Code, test, and deploy together with GitLab open source git repo management software _ GitLab, [dostęp: 2016-11-15], [w:] https://about.gitlab.com.
+[15] Diagram przypadków użycia _ Michał Wolski, [dostęp: 2016-10-20], [w:] https://www.michalwolski.pl/diagramy-uml/diagram-przypadkw-uzycia.
+[16] Diagramy_uml, [dostęp: 2016-10-20], [w:] http://info.wsisiz.edu.pl/ roksela/materialy/UML/diagramy_uml.pdf.
+[17] Domain model - Wikipedia, [dostęp: 2016-10-20], [w:] https://en.wikipedia.org/wiki/Domain_model.
+[18] Emma A LightWeight Database Management Tool For Linux - LinuxAndUbuntu, [dostęp: 2016-10-11], [w:] http://www.linuxandubuntu.com/home/emma-alightweight-database-management-tool-for-linux. [19] Git, [dostęp: 2016-11-15], https://git-scm.com.
+[20] GitHub - spring-projects_spring-boot Spring Boot, [dostęp: 2016-11-10], [w:] https://github.com/spring-projects/spring-boot.
+[21] Gulp.js - the streaming build system, [dostęp: 2016-11-02], [w:] http://gulpjs.com.
+[22] Hibernate ORM - Hibernate ORM, [dostęp: 2016-10-25], [w:] http://hibernate.org/orm.
+[23] Hibernate Tutorial, [dostęp: 2016-10-16], [w:] https://www.tutorialspoint.com/hibernate.
+[24] Informacje o podatku od nieruchomości - Finanse, [dostęp: 2016-11-10], www.finanse.mf.gov.pl/podatki-i-oplaty-lokalne/podatki-od-nieruchomosci.
+[25] IntelliJ IDEA the Java IDE, [dostęp: 2016-10-16], [w:] https://www.jetbrains.com/idea.
+[26] Inversion of control - Wikipedia, [dostęp: 2016-10-20], [w:] https://en.wikipedia.org/wiki/Inversion_of_control.
+[27] Jak wypełnić deklarację na podatek od nieruchomości - GOFIN.pl, [dostęp: 2016-11-20], [w:] http://www.gofin.pl/podatki/17,2,63,138336,jak-wypelnic-deklaracjena-podatek-od-nieruchomosci.html.
+[28] JHipster - Generate your Spring Boot + AngularJS apps!, [dostęp: 2016-11-02], [w:] https://jhipster.github.io.
+[29] Maven – Welcome to Apache Maven, [dostęp: 2016-11-02], https://maven.apache.org.
+[30] MariaDB.org - Ensuring continuity and open collaboration, [dostęp: 2016-10-25], [w:] https://mariadb.org.
+[31] Model-View-Controller – Wikipedia, wolna encyklopedia, [dostęp: 2016-10-20], [w:] https://pl.wikipedia.org/wiki/Model-View-Controller.
+[32] MySQL 5.7 Reference Manual 8 Backup and Recovery, [dostęp: 2016-11-20], [w:] http://dev.mysql.com/doc/refman/5.7/en/backup-and-recovery.html.
+[33] Npm, [dostęp: 2016-11-02], [w:] https://www.npmjs.com.
+[34] Object-relational mapping - Wikipedia, [dostęp: 2016-10-25], [w:] https://en.wikipedia.org/wiki/Object-relational_mapping.
+[35] PITY 2016-2017 Program do PIT 37, 36, 36L, 38 przez Internet _ e-PITy.pl,
+[dostęp: 2016-10-05], https://www.e-pity.pl.
+[36] PhpMyAdmin, [dostęp: 2016-11-10], [w:] https://www.phpmyadmin.net.
+[37] Prawo podatkowe - przepisy prawne, [dostęp: 2016-11-02], [w:] http://www.pit.pl/prawo_podatkowe_przepisy_prawne_331.php.
+[38] SOLID (object-oriented design) - Wikipedia, [dostęp: 2016-10-18], [w:] https://en.wikipedia.org/wiki/SOLID_(object-oriented_design).
+[39] Spring Framework - Wikipedia, [dostęp: 2016-10-15], [w:] https://en.wikipedia.org/wiki/Spring_Framework.
+[40] Sublime Text The text editor you’ll fall in love with, [dostęp: 2016-10-13], [w:] https://www.sublimetext.com.
+[41] WAR (file format) - Wikipedia, [dostęp: 2016-10-20], [w:] https://en.wikipedia.org/wiki/WAR_(file_format).
+[42] Welcome to NGINX Wiki’s documentation! _ NGINX, [dostęp: 2016-11-02], [w:] https://www.nginx.com/resources/wiki.
+58
+Spis rysunków
+4.1 Diagram przypadków użycia . . . . . . . . . . . . . . . . . . . . . . . . . . . .	22
+4.2 Wybór rodzaju podatku . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	26
+4.3 Informacje wstępne formularza na podatek od nieruchomości	. . . . . . . .	26
+4.4 Dane osobowe podmiotu w formularzu deklaracji na podatek od nierucho-
+	mości . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	27
+4.5 Dane adresowe osoby prawnej formularza na podatek od nieruchomości . .	28
+4.6 Adres do korespondencji osoby prawnej formularza na podatek od nieru-
+	chomości . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	28
+4.7 Widok gruntów formularza na podatek od nieruchomości . . . . . . . . . . .	29
+4.8 Widok budynków formularza na podatek od nieruchomości	. . . . . . . . .	29
+4.9 Widok gruntów zwolnionych z podatku formularza na podatek od nieruchomości . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+4.10 Widok budynków zwolnionych z podatku formularza na podatek od nieru-
+	chomości . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	30
+4.11 Informacje wstępne formularza na podatek rolny . . . . . . . . . . . . . . . .	31
+4.12 Dane osobowe osoby prawnej formularza na podatek rolny . . . . . . . . . .	32
+4.13 Dane adresowe osoby prawnej formularza na podatek rolny	. . . . . . . . .	32
+4.14 Widok gruntów ornych formularza na podatek od rolny . . . . . . . . . . . .	33
+4.15 Widok łąk i pastwisk formularza na podatek rolny . . . . . . . . . . . . . . .	33
+4.16 Widok sadów formularza na podatek rolny	. . . . . . . . . . . . . . . . . . .	34
+4.17 Widok gruntów ornych pod stawami niezarybionymi formularza na podatek
+	rolny . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	34
+4.18 Widok łąk i pastwisk pod stawami niezarybionymi formularza na podatek
+	rolny . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	35
+4.19 Widok zabudowanych gruntów ornych formularza na podatek rolny	. . . .	35
+4.20 Widok zabudowanych łąk i pastwisk formularza na podatek rolny	. . . . .	36
+4.21 Widok rowów na gruntach ornych formularza na podatek rolny . . . . . . .	36
+4.22 Widok rowów na łąkach i pastwiskach formularza na podatek rolny	. . . .	37
+4.23 Widok pozostałych aktywów formularza na podatek rolny . . . . . . . . . .	37
+4.24 Informacje wstępne formularza na podatek leśny . . . . . . . . . . . . . . . .	38
+4.25 Dane osobowe osoby prawnej formularza na podatek leśny . . . . . . . . . .	38
+4.26 Dane adresowe osoby prawnej formularza na podatek leśny	. . . . . . . . .	39
+4.27 Widok lasów formularza na podatek leśny . . . . . . . . . . . . . . . . . . . .	39
+4.28 Widok logowania . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	40
+4.29 Widok listy użytkowników . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	40
+4.30 Widok tworzenia nowego użytkownika . . . . . . . . . . . . . . . . . . . . . .	41
+4.31 Widok statusów HTTP zwracanych przez serwer . . . . . . . . . . . . . . . .	41
+4.32 Widok statystyk usług systemu . . . . . . . . . . . . . . . . . . . . . . . . . .	42
+4.33 Model domenowy bazy danych . . . . . . . . . . . . . . . . . . . . . . . . . . .	43
+4.34 Model logiczny bazy danych . . . . . . . . . . . . . . . . . . . . . . . . . . . .	44
+4.35 Fragment schematu bazy danych	. . . . . . . . . . . . . . . . . . . . . . . . .	45
+5.1 Diagram rozmieszczenia . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	48
+5.2 Diagram pakietów . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .	48
+60
